@@ -5,24 +5,34 @@ using UnityEngine;
 public class Manager : MonoBehaviour
 {
     public Transform MapaPrefab, PacmanPrefab, FantasmaPrefab;
-    public int FantasmasGenerados;
+    public int NumeroFantasmasGenerados = 3;
     MapGenerator mapa;
     PacmanManager pac;
-    FantasmaManager f1;
+    List<FantasmaManager> Fantasmas;
     bool PrimeraVuelta = true;
 
     void Start()
     {
+        Fantasmas = new List<FantasmaManager>();
+        for (int i = 0; i < NumeroFantasmasGenerados; i++)
+        {
+            Fantasmas.Add(new FantasmaManager());
+        }
         mapa = Instantiate(MapaPrefab, new Vector3(0, 0.5f, 0), Quaternion.identity).GetComponent<MapGenerator>();
     }
 
-    private Vector3 GetValidRandomVector3()
+    private Vector3 GetValidRandomVector3(bool fant = true)
     {
         Vector3 temp;
+        bool evaluaFantasmas = false;
         do {
             temp = Utility.GetRandomVector3((int)mapa.mapSize.x, (int)mapa.mapSize.y);
+
+            evaluaFantasmas = fant ? Utility.IsInPosition(temp, 
+                Fantasmas, pac.transform.position) : false;
         } while(Utility.IsInPosition(temp, mapa.Obstaculos, (int)(mapa.mapSize.x / 2), (int)(mapa.mapSize.y / 2)) || 
-            Utility.IsInPosition(temp, mapa.Inaccesibles, (int)(mapa.mapSize.x / 2), (int)(mapa.mapSize.y / 2)));
+            Utility.IsInPosition(temp, mapa.Inaccesibles, (int)(mapa.mapSize.x / 2), (int)(mapa.mapSize.y / 2)) ||
+            evaluaFantasmas);
 
         return temp;
     }
@@ -32,15 +42,18 @@ public class Manager : MonoBehaviour
     {
         if(PrimeraVuelta)
         {
+            PrimeraVuelta = false;
             Debug.Log(mapa.allTilesCoords.Count, this);
 
-            pac = Instantiate(PacmanPrefab, GetValidRandomVector3(), Quaternion.identity).GetComponent<PacmanManager>();
+            pac = Instantiate(PacmanPrefab, GetValidRandomVector3(false), Quaternion.identity).GetComponent<PacmanManager>();
             pac.Mapa = mapa;
-            f1 = Instantiate(FantasmaPrefab, GetValidRandomVector3(), Quaternion.identity).GetComponent<FantasmaManager>();
-            f1.Objetivo = pac;
-            f1.Mapa = mapa;
 
-            PrimeraVuelta = false;
+            for(int i = 0; i < Fantasmas.Count; i++)
+            {
+                Fantasmas[i] = Instantiate(FantasmaPrefab, GetValidRandomVector3(), Quaternion.identity).GetComponent<FantasmaManager>();
+                Fantasmas[i].Objetivo = pac;
+                Fantasmas[i].Mapa = mapa;
+            }
         } else
         {
             

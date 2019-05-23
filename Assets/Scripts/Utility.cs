@@ -17,7 +17,7 @@ public static class Utility
 
     public static bool IsInPosition(Vector3 _obj1, Vector3 _obj2)
     {
-        return (_obj1.x == _obj2.x && _obj1.y == _obj2.y) ? true : false;
+        return (_obj1.x == _obj2.x && _obj1.z == _obj2.z) ? true : false;
     }
 
     public static bool IsInPosition(Vector3 _obj1, List<Vector3> _obj2, int cx = 0, int cy = 0)
@@ -39,5 +39,18 @@ public static class Utility
 
         int total = _obj2.FindAll(p => p.x == x && p.y == y).Count;
         return total > 0 ? true : false;
+    }
+
+    public static bool IsInPosition(Vector3 _obj1, List<FantasmaManager> _obj2, Vector3 _pacman)
+    {
+        if(_obj2.Count > 0)
+        {
+            int total = _obj2.FindAll(p => p != null && p.transform.position.x == _obj1.x
+                && p.transform.position.z == _obj1.z).Count;
+
+            total += IsInPosition(_obj1, _pacman) ? 1 : 0;
+
+            return total > 0 ? true : false;
+        } else return false;
     }
 }
