@@ -21,8 +21,8 @@ public class Manager : MonoBehaviour
         Vector3 temp;
         do {
             temp = Utility.GetRandomVector3((int)mapa.mapSize.x, (int)mapa.mapSize.y);
-        } while(Utility.IsInPosition(temp, mapa.Obstaculos) && 
-            Utility.IsInPosition(temp, mapa.Inaccesibles));
+        } while(Utility.IsInPosition(temp, mapa.Obstaculos, (int)(mapa.mapSize.x / 2), (int)(mapa.mapSize.y / 2)) && 
+            Utility.IsInPosition(temp, mapa.Inaccesibles, (int)(mapa.mapSize.x / 2), (int)(mapa.mapSize.y / 2)));
 
         return temp;
     }
