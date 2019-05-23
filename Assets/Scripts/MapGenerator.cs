@@ -10,14 +10,17 @@ public class MapGenerator : MonoBehaviour
     public Vector2 mapSize;
     [Range(0, 1)]
     public float outlinePercent;
-    List<Coordenada> allTilesCoords;
-    List<Coordenada> Obstaculos;
-    List<Coordenada> Inaccesibles;
+    public List<Coordenada> allTilesCoords { get; set; }
+    public List<Coordenada> Obstaculos { get; set; }
+    public List<Coordenada> Inaccesibles { get; set; }
+    public Transform[,] tileMap { get; set; }
+
+    public MapGenerator() { }
 
     // Start is called before the first frame update
     void Start()
     {
-        // IniciarObstaculos();
+        IniciarObstaculos();
         GenerateMap();
     }
 
@@ -138,6 +141,7 @@ public class MapGenerator : MonoBehaviour
     public void GenerateMap()
     {
         allTilesCoords = new List<Coordenada>();
+        tileMap = new Transform[(int)mapSize.x, (int)mapSize.y];
         for(int x = 0; x < mapSize.x; x++)
         {
             for(int y = 0; y < mapSize.y; y++)
