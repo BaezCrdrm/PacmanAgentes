@@ -188,6 +188,33 @@ public class MapGenerator : MonoBehaviour
         return new Vector3(-mapSize.x / 2 + 0.5f + x, 0, -mapSize.y / 2 + 0.5f + y);
     }
 
+    public bool PuedeMoverseA(Vector2 _coords)
+    {
+        try
+        {
+            Vector3 vals = new Vector3(_coords.x, 0, _coords.y);
+            if(!Utility.IsInPosition(vals, Obstaculos)
+                && !Utility.IsInPosition(vals, Inaccesibles))
+                return true;
+            else return false;
+        }
+        catch (System.Exception)
+        {
+            return false;
+        }
+    }
+
+    public Vector3 AtraviesaTunel(Vector3 _posicion)
+    {
+        int salida = (int)(mapSize.x / 2);
+        if(_posicion.x > salida && _posicion.z == 0.5)
+            _posicion.x = -salida;
+        else if(_posicion.x < -salida && _posicion.z == 0.5)
+            _posicion.x = salida;
+
+        return _posicion;
+    }
+
     // Genera las coordenadas para los tiles en el arreglo
     public struct Coordenada
     {

@@ -53,4 +53,39 @@ public static class Utility
             return total > 0 ? true : false;
         } else return false;
     }
+
+    ///<summary>
+    /// Función de movimiento presentado por la profesora.
+    /// Selecciona los movimientos para rodear un obstáculo.
+    ///</summary>
+    public static int SeleccionaMovimiento(bool[] Censo)
+    {
+        bool[] PosiblesMovimientos = new bool[4];
+
+        PosiblesMovimientos[0] = !Censo[1] || !Censo[2];
+        PosiblesMovimientos[1] = !Censo[3] || !Censo[4];
+        PosiblesMovimientos[2] = !Censo[5] || !Censo[6];
+        PosiblesMovimientos[3] = !Censo[7] || !Censo[0];
+
+        // printMovimientos();
+        int val = -1;
+
+        if (PosiblesMovimientos[0] == true && PosiblesMovimientos[1] == false)
+            val = 3;
+        else if (PosiblesMovimientos[1] == true && PosiblesMovimientos[2] == false)
+            val = 5;
+        else if (PosiblesMovimientos[2] == true && PosiblesMovimientos[3] == false)
+            val = 7;
+        else if (PosiblesMovimientos[3] == true && PosiblesMovimientos[0] == false)
+            val = 1;
+        else val = 1;
+
+        return val;
+    }
+
+    public static float ManhattanDistance(Agente _obj1, Agente _obj2)
+    {
+        return Mathf.Abs(_obj1.Posicion.x - _obj2.Posicion.x) + 
+            Mathf.Abs(_obj1.Posicion.y - _obj2.Posicion.y);
+    }
 }

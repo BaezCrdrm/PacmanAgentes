@@ -4,13 +4,20 @@ using UnityEngine;
 
 public class FantasmaManager : Agente
 {
-    public Vector2 PosicionTemp;
     public PacmanManager Objetivo { get; set; }
 
     public FantasmaManager() { }
 
-    void Start()
+    protected override void Start()
     {
-        
+        base.Start();
+    }
+
+    void Update()
+    {
+        if(Objetivo != null)
+        {
+            
+        }
     }
 }

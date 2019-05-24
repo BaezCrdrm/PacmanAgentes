@@ -43,7 +43,7 @@ public class Manager : MonoBehaviour
         if(PrimeraVuelta)
         {
             PrimeraVuelta = false;
-            Debug.Log(mapa.allTilesCoords.Count, this);
+            // Debug.Log(mapa.allTilesCoords.Count, this);
 
             pac = Instantiate(PacmanPrefab, GetValidRandomVector3(false), Quaternion.identity).GetComponent<PacmanManager>();
             pac.Mapa = mapa;
