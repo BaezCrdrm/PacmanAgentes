@@ -27,32 +27,17 @@ public class PacmanManager : Agente
             // Código
         } else
         {
+            int m = -1;
             if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
-            {
-                Vector3 position = this.transform.position;
-                position.x--;
-                position = Mapa.AtraviesaTunel(position);
-                this.transform.position = position;
-            }
+               m = 2;
             if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
-            {
-                Vector3 position = this.transform.position;
-                position.x++;
-                position = Mapa.AtraviesaTunel(position);
-                this.transform.position = position;
-            }
+                m = 0;
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
-            {
-                Vector3 position = this.transform.position;
-                position.z++;
-                this.transform.position = position;
-            }
+                m = 3;
             if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
-            {
-                Vector3 position = this.transform.position;
-                position.z--;
-                this.transform.position = position;
-            }
+                m = 1;
+
+            if(m != -1) MoverA(m);
         }
     }
 }
