@@ -10,21 +10,38 @@ public class Agente : MonoBehaviour
     public bool[] Censo { get; protected set; }
     public bool[] PosiblesMovimientos { get; protected set; }
 
-    protected virtual void Start()
+    protected virtual IEnumerator Start()
     {
         Censo = new bool[8];
+        // Obtener coordenadas relativas al mapa
+        ActualizaPosicion();
+
+        return null;
+    }
+
+    protected void ActualizaPosicion()
+    {
+        float x = Mapa.mapSize.x / 2;
+        float y = Mapa.mapSize.y / 2;
+
+        Posicion = new Vector2(this.transform.position.x + x - 0.5f, this.transform.position.z + y - 0.5f);
     }
 
     /// <summary>
     /// Actualiza la evaluación de los posibles 
     /// movimientos que el agente puede tomar.
+    /// 0 -> Este
+    /// 1 -> Sur
+    /// 2 -> Oeste
+    /// 3 -> Norte
+    ///
     /// </summary>
     public void EvaluaMovimiento()
     {
         Censo = new bool[8];
         for(int i = 0; i < 8; i++)
         {
-            Vector2 coords = ObtieneCoordenadasRelativas(i);
+            Vector2 coords = Utility.ObtieneCoordenadasRelativas(i);
             coords.x += Posicion.x;
             coords.y += Posicion.y;
 
@@ -41,56 +58,6 @@ public class Agente : MonoBehaviour
                 Censo[i] = false;
             }
         }
-    }
-
-    private Vector2 ObtieneCoordenadasRelativas(int i)
-    {
-        Vector2 vals = new Vector2(0,0);
-
-        switch (i)
-        {
-            case 0:
-                vals.x = -1;
-                vals.y = -1;
-                break;
-
-            case 1:
-                vals.x = 0;
-                vals.y = -1;
-                break;
-
-            case 2:
-                vals.x = 1;
-                vals.y = -1;
-                break;
-
-            case 3:
-                vals.x = 1;
-                vals.y = 0;
-                break;
-
-            case 4:
-                vals.x = 1;
-                vals.y = 1;
-                break;
-
-            case 5:
-                vals.x = 0;
-                vals.y = 1;
-                break;
-
-            case 6:
-                vals.x = -1;
-                vals.y = 1;
-                break;
-
-            case 7:
-                vals.x = -1;
-                vals.y = 0;
-                break;
-        }
-
-        return vals;
     }
 
     public void MoverA(int _m)

@@ -188,6 +188,13 @@ public class MapGenerator : MonoBehaviour
         return new Vector3(-mapSize.x / 2 + 0.5f + x, 0, -mapSize.y / 2 + 0.5f + y);
     }
 
+    /// <summary>
+    /// Verifica si un ente cualquiera puede moverse a 
+    /// una posición propuesta.
+    /// </summary>
+    /// <return>
+    /// Verdadero si puede hacer el movimiento.
+    /// </return>
     public bool PuedeMoverseA(Vector2 _coords)
     {
         try
@@ -204,6 +211,50 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
+    public Coordenada[] PuedeMoverseA(Vector2 _coords, bool[] _pm)
+    {
+        // try
+        // {
+        //     Vector3 vals = new Vector3(_coords.x, 0, _coords.y);
+        //     if(!Utility.IsInPosition(vals, Obstaculos)
+        //         && !Utility.IsInPosition(vals, Inaccesibles))
+        //         return true;
+        //     else return false;
+        // }
+        // catch (System.Exception)
+        // {
+        //     return false;
+        // }
+        Coordenada[] movimientosValidos = new Coordenada[4];
+
+        int j = 3;
+        for(int i = 1; i <= 7; i += 2)
+        {
+            if(_pm[j])
+            {
+                Vector2 posicion = Utility.ObtieneCoordenadasRelativas(i);
+                int x = (int)(_coords.x + posicion.x);
+                int y = (int)(_coords.y + posicion.y);
+                bool obst = Utility.IsInPosition(
+                    new Vector3(x, 0, y), Obstaculos);
+                bool ina = Utility.IsInPosition(
+                    new Vector3(x, 0, y), Inaccesibles);
+
+                if (!obst && !ina)
+                    movimientosValidos[j] = new Coordenada(x, y);
+            }
+
+            if(j == 3) j = 0;
+            else j++;
+        }
+
+        return movimientosValidos;
+    }
+
+    /// <summary>
+    /// Regresa el vector correcto para lograr 
+    /// "atravesar el tunel".
+    ///</summary>
     public Vector3 AtraviesaTunel(Vector3 _posicion)
     {
         int salida = (int)(mapSize.x / 2);

@@ -13,9 +13,11 @@ public class PacmanManager : Agente
     }
 
     // Start is called before the first frame update
-    protected override void Start()
+    protected override IEnumerator Start()
     {
         base.Start();
+        // yield return new WaitForSeconds(5.0f);
+        return null;
     }
 
     // Update is called once per frame

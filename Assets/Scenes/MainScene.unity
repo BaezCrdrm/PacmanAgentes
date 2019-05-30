@@ -243,7 +243,7 @@ MonoBehaviour:
     type: 3}
   FantasmaPrefab: {fileID: 4352662842229399050, guid: 9dad331ee92649044a0465911cd5fc96,
     type: 3}
-  NumeroFantasmasGenerados: 3
+  NumeroFantasmasGenerados: 1
 --- !u!1 &1773424434
 GameObject:
   m_ObjectHideFlags: 0
