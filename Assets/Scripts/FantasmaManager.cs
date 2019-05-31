@@ -6,6 +6,7 @@ using UnityEngine;
 public class FantasmaManager : Agente
 {
     public PacmanManager Objetivo { get; set; }
+    public List<MapGenerator.Coordenada> Cerrados { get; set; }
 
     public FantasmaManager() { }
 
@@ -98,8 +99,8 @@ public class FantasmaManager : Agente
                 {
                     try
                     {
-                        // Aquí está calculando que sur y este son lo mismo. Verificar
-                        if (coordenadas[i].x != 0 && coordenadas[i].y != 0)
+                        if ((coordenadas[i].x != 0 && coordenadas[i].y != 0) &&
+                            !Utility.IsInList(coordenadas[i], Cerrados))
                         {
                             Vector3 c = new Vector3(coordenadas[i].x, this.transform.position.y, coordenadas[i].y);
                             float val = Utility.ManhattanDistance(c, Objetivo.Posicion);
@@ -117,13 +118,19 @@ public class FantasmaManager : Agente
                 }
                 // Moverse al seleccinado
                 //      Bloquear posición anterior
+                Anterior = Posicion;
+                Cerrados.Add(new MapGenerator.Coordenada((int)mejorCoordenada.x, (int)mejorCoordenada.z));
                 MoverA(j);
                 // Posicion = mejorCoordenada;
                 ActualizaPosicion();
 
                 // Repetir
             }
-            else PrimeraVuelta = false;
+            else
+            {
+                PrimeraVuelta = false;
+                Cerrados = new List<MapGenerator.Coordenada>();
+            }
         }
     }
 }

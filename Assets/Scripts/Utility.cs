@@ -20,7 +20,7 @@ public static class Utility
         return (_obj1.x == _obj2.x && _obj1.z == _obj2.z) ? true : false;
     }
 
-    public static bool IsInPosition(Vector3 _obj1, List<Vector3> _obj2, int cx = 0, int cy = 0)
+    public static bool IsInPosition(Vector3 _obj1, List<Vector3> _obj2)
     {
         int total = _obj2.FindAll(p => p.x == _obj1.x && p.y == _obj1.z).Count;
         return total > 0 ? true : false;
@@ -54,6 +54,16 @@ public static class Utility
 
             return total > 0 ? true : false;
         } else return false;
+    }
+
+    public static bool IsInList(MapGenerator.Coordenada _coordenada, List<MapGenerator.Coordenada> _lista)
+    {
+        if (_lista.Count > 0)
+        {
+            int total = _lista.FindAll(p => p.x == _coordenada.x && p.y == _coordenada.y).Count;
+            return total > 0 ? true : false;
+        }
+        else return false;
     }
 
     ///<summary>

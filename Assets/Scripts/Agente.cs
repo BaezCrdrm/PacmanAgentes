@@ -9,12 +9,14 @@ public class Agente : MonoBehaviour
     protected bool PrimeraVuelta = true;
     public bool[] Censo { get; protected set; }
     public bool[] PosiblesMovimientos { get; protected set; }
+    public Vector2 Anterior { get; set; }
 
     protected virtual IEnumerator Start()
     {
         Censo = new bool[8];
         // Obtener coordenadas relativas al mapa
         ActualizaPosicion();
+        Anterior = Posicion;
 
         return null;
     }
@@ -36,7 +38,7 @@ public class Agente : MonoBehaviour
     /// 3 -> Norte
     ///
     /// </summary>
-    public void EvaluaMovimiento()
+    public void EvaluaMovimiento(List<MapGenerator.Coordenada> coordenadas = null)
     {
         Censo = new bool[8];
         for(int i = 0; i < 8; i++)
@@ -47,8 +49,23 @@ public class Agente : MonoBehaviour
 
             try
             {
+                // Poner aquí Condición de la posición anterior
                 if(Mapa.PuedeMoverseA(coords))
-                    Censo[i] = true;
+                {
+                    //if(coordenadas != null && 
+                    //    !Utility.IsInList(
+                    //        new MapGenerator.Coordenada((int)coords.x, (int)coords.y),
+                    //        coordenadas))
+                    //    Censo[i] = true;
+
+                    if (coordenadas == null)
+                        Censo[i] = true;
+                    else if (coordenadas != null && !Utility.IsInList(
+                            new MapGenerator.Coordenada((int)coords.x, (int)coords.y),
+                            coordenadas))
+                        Censo[i] = true;
+                    else Censo[i] = false;
+                }
                 else Censo[i] = false;
             }
             catch (System.Exception ex)
@@ -58,6 +75,13 @@ public class Agente : MonoBehaviour
                 Censo[i] = false;
             }
         }
+    }
+
+    private bool EstaEnUltimaPosicion(Vector2 coordenada)
+    {
+        if (Anterior.x == coordenada.x && Anterior.y == coordenada.y)
+            return true;
+            else return false;
     }
 
     public void MoverA(int _m)
