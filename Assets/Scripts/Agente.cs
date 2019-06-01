@@ -11,15 +11,14 @@ public class Agente : MonoBehaviour
     public bool[] PosiblesMovimientos { get; protected set; }
     public Vector2 Anterior { get; set; }
     public bool Alcanzado { get; set; }
+    public bool EnUso { get; set; }
 
-    protected virtual IEnumerator Start()
+    protected virtual void Start()
     {
         Censo = new bool[8];
         // Obtener coordenadas relativas al mapa
         ActualizaPosicion();
         Anterior = Posicion;
-
-        return null;
     }
 
     protected void ActualizaPosicion()

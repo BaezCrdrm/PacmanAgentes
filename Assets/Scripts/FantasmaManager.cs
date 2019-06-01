@@ -10,75 +10,27 @@ public class FantasmaManager : Agente
 
     public FantasmaManager() { }
 
-    protected override IEnumerator Start()
+    protected override void Start()
     {
         base.Start();
-        //while(true)
-        //{
-        //    if (Objetivo != null)
-        //    {
-        //        if (!PrimeraVuelta)
-        //        {
-        //            // Modificar la cuestión del censo y la selección de 
-        //            // documentos
-
-
-        //            // Evaluar movimientos
-        //            EvaluaMovimiento();
-
-        //            // Obtener los posibles movimientos
-        //            PosiblesMovimientos = Utility.SeleccionaMovimiento(Censo);
-
-        //            // Medir la distancia en todos los posibles movimientos
-        //            //      Obtener las coordenadas de los posibles movimientos
-        //            MapGenerator.Coordenada[] coordenadas = Mapa.PuedeMoverseA(Posicion, PosiblesMovimientos);
-
-        //            // Elegir el más cercano (greedy)
-        //            float mejor = Mapa.mapSize.x * 2 + 1f;
-        //            Vector3 mejorCoordenada = new Vector3(this.Posicion.x, this.transform.position.y, this.Posicion.y);
-
-        //            int j = -1;
-
-        //            for (int i = 0; i < 4; i++)
-        //            {
-        //                try
-        //                {
-        //                    float val = Utility.ManhattanDistance(this, Objetivo);
-        //                    // Poner aquí la condición para evitar que vuelva a la posición inmediata anterior.
-        //                    if (val < mejor)
-        //                    {
-        //                        mejor = val;
-        //                        j = i;
-        //                        mejorCoordenada = new Vector3(coordenadas[i].x, this.transform.position.y, coordenadas[i].y);
-        //                        Debug.Log(System.String.Format("Nuevo mejor valor: {0}", val));
-        //                    }
-        //                }
-        //                catch (Exception ex) { }
-        //            }
-        //            // Moverse al seleccinado
-        //            //      Bloquear posición anterior
-        //            MoverA(j);
-        //            Posicion = mejorCoordenada;
-
-        //            // Repetir
-        //            yield return new WaitForSeconds(5.0f);
-        //        }
-        //        else PrimeraVuelta = false;
-        //    }
-        //}
-        return null;
     }
 
-    void LateUpdate()
+    private void Update()
     {
+        if(!EnUso)
+        {
+            if(!Alcanzado)
+                StartCoroutine(Rutina(0.25f));
+        }
+    }
+
+    IEnumerator Rutina(float delay)
+    {
+        EnUso = true;
         if (Objetivo != null)
         {
             if (!PrimeraVuelta && !Alcanzado)
             {
-                // Modificar la cuestión del censo y la selección de 
-                // documentos
-
-
                 // Evaluar movimientos
                 EvaluaMovimiento();
 
@@ -104,7 +56,7 @@ public class FantasmaManager : Agente
                         {
                             Vector3 c = new Vector3(coordenadas[i].x, this.transform.position.y, coordenadas[i].y);
                             float val = Utility.ManhattanDistance(c, Objetivo.Posicion);
-                            
+
                             if (val < mejor)
                             {
                                 mejor = val;
@@ -134,7 +86,7 @@ public class FantasmaManager : Agente
 
                 if (Cerrados.Count >= (int)Mapa.mapSize.x * 2)
                     Cerrados.RemoveAt(0);
-                
+
                 //if(Utility.IsInPosition)
                 //{
 
@@ -142,15 +94,20 @@ public class FantasmaManager : Agente
 
                 // Repetir
             }
-            else if(Alcanzado)
+            else if (Alcanzado)
             {
                 Debug.Log("Alcanzado: " + Alcanzado);
+                // break;
             }
             else
             {
                 PrimeraVuelta = false;
                 Cerrados = new List<MapGenerator.Coordenada>();
+                delay = 0f;
             }
+
+            yield return new WaitForSeconds(delay);
         }
+        EnUso = false;
     }
 }
