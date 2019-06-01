@@ -10,6 +10,7 @@ public class Agente : MonoBehaviour
     public bool[] Censo { get; protected set; }
     public bool[] PosiblesMovimientos { get; protected set; }
     public Vector2 Anterior { get; set; }
+    public bool Alcanzado { get; set; }
 
     protected virtual IEnumerator Start()
     {
@@ -52,12 +53,6 @@ public class Agente : MonoBehaviour
                 // Poner aquí Condición de la posición anterior
                 if(Mapa.PuedeMoverseA(coords))
                 {
-                    //if(coordenadas != null && 
-                    //    !Utility.IsInList(
-                    //        new MapGenerator.Coordenada((int)coords.x, (int)coords.y),
-                    //        coordenadas))
-                    //    Censo[i] = true;
-
                     if (coordenadas == null)
                         Censo[i] = true;
                     else if (coordenadas != null && !Utility.IsInList(

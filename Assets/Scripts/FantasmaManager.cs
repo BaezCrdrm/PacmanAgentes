@@ -73,7 +73,7 @@ public class FantasmaManager : Agente
     {
         if (Objetivo != null)
         {
-            if (!PrimeraVuelta)
+            if (!PrimeraVuelta && !Alcanzado)
             {
                 // Modificar la cuestión del censo y la selección de 
                 // documentos
@@ -112,10 +112,18 @@ public class FantasmaManager : Agente
                                 mejorCoordenada = c;
                                 Debug.Log(System.String.Format("Nuevo mejor valor: {0}", val));
                             }
+
+                            if (Mathf.Abs(val) <= 1f)
+                            {
+                                Alcanzado = true;
+                                Objetivo.Alcanzado = true;
+                                break;
+                            }
                         }
                     }
                     catch (Exception ex) { }
                 }
+
                 // Moverse al seleccinado
                 //      Bloquear posición anterior
                 Anterior = Posicion;
@@ -125,6 +133,10 @@ public class FantasmaManager : Agente
                 ActualizaPosicion();
 
                 // Repetir
+            }
+            else if(Alcanzado)
+            {
+                Debug.Log("Alcanzado: " + Alcanzado);
             }
             else
             {
