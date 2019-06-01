@@ -64,6 +64,8 @@ public class Manager : MonoBehaviour
                 Fantasmas[i].Objetivo = pac;
                 Fantasmas[i].Mapa = mapa;
             }
+
+            pac.Fantasmas = Fantasmas;
         } else
         {
             

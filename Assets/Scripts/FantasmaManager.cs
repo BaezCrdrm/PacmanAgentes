@@ -81,8 +81,6 @@ public class FantasmaManager : Agente
                 Anterior = Posicion;
                 Cerrados.Add(new MapGenerator.Coordenada((int)Posicion.x, (int)Posicion.y));
                 MoverA(j);
-                // Posicion = mejorCoordenada;
-                ActualizaPosicion();
 
                 if (Cerrados.Count >= (int)Mapa.mapSize.x * 2)
                     Cerrados.RemoveAt(0);
@@ -97,7 +95,6 @@ public class FantasmaManager : Agente
             else if (Alcanzado)
             {
                 Debug.Log("Alcanzado: " + Alcanzado);
-                // break;
             }
             else
             {

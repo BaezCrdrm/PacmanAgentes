@@ -113,5 +113,7 @@ public class Agente : MonoBehaviour
             position.z++;
             this.transform.position = position;
         }
+
+        ActualizaPosicion();
     }
 }
