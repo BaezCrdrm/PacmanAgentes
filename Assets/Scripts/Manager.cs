@@ -28,6 +28,17 @@ public class Manager : MonoBehaviour
         do {
             temp = Utility.GetRandomVector3((int)mapa.mapSize.x, (int)mapa.mapSize.y);
 
+            // Para pruebas
+            //if(fant)
+            //{
+            //    temp = new Vector3(11 / 2, 0.5f, 0.5f);
+            //} else
+            //{
+            //    // temp = new Vector3(15 / 2, 0.5f, 16 / 2 + 0.5f);
+            //    temp = new Vector3(-13 / 2, 0.5f, 0.5f);
+            //}
+            // Fin de seccion de pruebas
+
             evaluaFantasmas = fant ? Utility.IsInPosition(temp, 
                 Fantasmas, pac.transform.position) : false;
         } while(Utility.IsInPosition(temp, mapa.Obstaculos, (int)(mapa.mapSize.x / 2), (int)(mapa.mapSize.y / 2)) || 

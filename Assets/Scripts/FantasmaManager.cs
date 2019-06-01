@@ -99,12 +99,12 @@ public class FantasmaManager : Agente
                 {
                     try
                     {
-                        if ((coordenadas[i].x != 0 && coordenadas[i].y != 0) &&
+                        if (PosiblesMovimientos[i] &&
                             !Utility.IsInList(coordenadas[i], Cerrados))
                         {
                             Vector3 c = new Vector3(coordenadas[i].x, this.transform.position.y, coordenadas[i].y);
                             float val = Utility.ManhattanDistance(c, Objetivo.Posicion);
-                            // Poner aquí la condición para evitar que vuelva a la posición inmediata anterior.
+                            
                             if (val < mejor)
                             {
                                 mejor = val;
@@ -127,10 +127,18 @@ public class FantasmaManager : Agente
                 // Moverse al seleccinado
                 //      Bloquear posición anterior
                 Anterior = Posicion;
-                Cerrados.Add(new MapGenerator.Coordenada((int)mejorCoordenada.x, (int)mejorCoordenada.z));
+                Cerrados.Add(new MapGenerator.Coordenada((int)Posicion.x, (int)Posicion.y));
                 MoverA(j);
                 // Posicion = mejorCoordenada;
                 ActualizaPosicion();
+
+                if (Cerrados.Count >= (int)Mapa.mapSize.x * 2)
+                    Cerrados.RemoveAt(0);
+                
+                //if(Utility.IsInPosition)
+                //{
+
+                //}
 
                 // Repetir
             }

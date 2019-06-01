@@ -29,12 +29,7 @@ public static class Utility
     public static bool IsInPosition(Vector3 _obj1, List<MapGenerator.Coordenada> _obj2, 
         int cx = 0, int cy = 0)
     {
-        // El problema se encuentra en la llamada a este método. Es necesario saber si es por
-        // la llamada o el método que están mal configurados. No se le está pasando cx ni cy.
         int x, y;
-        // _obj1 = new Vector3(6f, 0.5f, 3.5f);
-        //if(_obj1.x % 2 != 0) _obj1.x -= 0.5f;
-        //if(_obj1.z % 2 != 0) _obj1.z -= 0.5f;
 
         x = (int)_obj1.x + cx;
         y = (int)_obj1.z + cy;
@@ -103,11 +98,6 @@ public static class Utility
     {
         bool[] PosiblesMovimientos = new bool[4];
 
-        // PosiblesMovimientos[0] = !Censo[1] || !Censo[2];
-        // PosiblesMovimientos[1] = !Censo[3] || !Censo[4];
-        // PosiblesMovimientos[2] = !Censo[5] || !Censo[6];
-        // PosiblesMovimientos[3] = !Censo[7] || !Censo[0];
-
         PosiblesMovimientos[0] = Censo[3];
         PosiblesMovimientos[1] = Censo[5];
         PosiblesMovimientos[2] = Censo[7];
@@ -168,20 +158,8 @@ public static class Utility
         return vals;
     }
 
-    public static float ManhattanDistance(Vector3 _obj1, Vector3 _obj2)
-    {
-        //return Mathf.Abs(_obj1.x - _obj2.x) +
-        //    Mathf.Abs(_obj1.z - _obj2.z);
-
-        return Mathf.Abs(Mathf.Abs(_obj1.x) - Mathf.Abs(_obj2.x)) +
-            Mathf.Abs(Mathf.Abs(_obj1.z) - Mathf.Abs(_obj2.z));
-    }
-
     public static float ManhattanDistance(Vector3 _obj1, Vector2 _obj2)
     {
-        //return Mathf.Abs(_obj1.x - _obj2.x) +
-        //    Mathf.Abs(_obj1.z - _obj2.z);
-
         return Mathf.Abs(Mathf.Abs(_obj1.x) - Mathf.Abs(_obj2.x)) +
             Mathf.Abs(Mathf.Abs(_obj1.z) - Mathf.Abs(_obj2.y));
     }
