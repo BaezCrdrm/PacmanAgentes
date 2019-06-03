@@ -6,10 +6,13 @@ public class Manager : MonoBehaviour
 {
     public Transform MapaPrefab, PacmanPrefab, FantasmaPrefab;
     public int NumeroFantasmasGenerados = 3;
+    public int NumeroDeFantasmasRodeandoAObjetivo = 2;
+
     MapGenerator mapa;
     PacmanManager pac;
     List<FantasmaManager> Fantasmas;
     bool PrimeraVuelta = true;
+    bool Detener;
 
     void Start()
     {
@@ -68,7 +71,18 @@ public class Manager : MonoBehaviour
             pac.Fantasmas = Fantasmas;
         } else
         {
-            
+            if (!Detener)
+            {
+                // Esta condición puede cambiar
+                int total = Fantasmas.FindAll(p => p.Alcanzado == true).Count;
+
+                if (total >= NumeroDeFantasmasRodeandoAObjetivo)
+                {
+                    Detener = true;
+                    Fantasmas.ForEach(i => i.Alcanzado = true);
+                }
+                else Detener = false;
+            }
         }
     }
 }

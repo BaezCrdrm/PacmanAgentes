@@ -73,7 +73,7 @@ public class FantasmaManager : Agente
                             }
                         }
                     }
-                    catch (Exception ex) { }
+                    catch (Exception) { }
                 }
 
                 // Moverse al seleccinado
@@ -82,7 +82,10 @@ public class FantasmaManager : Agente
                 Cerrados.Add(new MapGenerator.Coordenada((int)Posicion.x, (int)Posicion.y));
                 MoverA(j);
 
-                if (Cerrados.Count >= (int)Mapa.mapSize.x * 2)
+                //if (Cerrados.Count >= (int)Mapa.mapSize.x * 2)
+                //    Cerrados.RemoveAt(0);
+
+                if (Cerrados.Count >= 3)
                     Cerrados.RemoveAt(0);
 
                 //if(Utility.IsInPosition)
