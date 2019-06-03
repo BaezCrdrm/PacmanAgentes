@@ -48,6 +48,7 @@ public class PacmanManager : Agente
 
             // Elegir el más cercano (greedy)
             float mejor = -1;
+            bool enTunel = Mapa.Tunel.FindAll(p => p.x == Posicion.x && p.y == Posicion.y).Count > 0;
             Vector3 mejorCoordenada = new Vector3(this.Posicion.x, this.transform.position.y, this.Posicion.y);
 
             int j = -1;
@@ -60,33 +61,41 @@ public class PacmanManager : Agente
                 {
                     if (PosiblesMovimientos[i])
                     {
-                        Vector3 c = new Vector3(coordenadas[i].x, this.transform.position.y, coordenadas[i].y);
-
-                        foreach (FantasmaManager fantasma in Fantasmas)
+                        if (!enTunel)
                         {
-                            try
-                            {
-                                float val = Utility.ManhattanDistance(c, fantasma.Posicion);
+                            Vector3 c = new Vector3(coordenadas[i].x, this.transform.position.y, coordenadas[i].y);
 
-                                if(val <= distanciaSegura)
+                            foreach (FantasmaManager fantasma in Fantasmas)
+                            {
+                                try
                                 {
-                                    if (val > mejor )
+                                    float val = Utility.ManhattanDistance(c, fantasma.Posicion);
+
+                                    if (val <= distanciaSegura)
                                     {
-                                        mejor = val;
-                                        j = i;
-                                        mejorCoordenada = c;
-                                        Debug.Log(System.String.Format("Nuevo mejor valor: {0}", val));
+                                        if (val > mejor)
+                                        {
+                                            mejor = val;
+                                            j = i;
+                                            mejorCoordenada = c;
+                                            Debug.Log(System.String.Format("Nuevo mejor valor: {0}", val));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // Elegir posicion aleatoria
+                                        dsegura++;
                                     }
                                 }
-                                else
+                                catch (NullReferenceException nre)
                                 {
-                                    // Elegir posicion aleatoria
-                                    dsegura++;
+                                    Debug.Log("Error al seleccionar movimiento.\n" + nre.Message);
                                 }
-                            } catch(NullReferenceException nre)
-                            {
-                                Debug.Log("Error al seleccionar movimiento.\n" + nre.Message);
                             }
+                        } else
+                        {
+                            j = Posicion.x <= 4 ? 0 : 3;
+                            break;
                         }
                     }
                 }

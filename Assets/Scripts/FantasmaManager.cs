@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class FantasmaManager : Agente
 {
+    public int BloqueoDePosiciones = 4;
     public PacmanManager Objetivo { get; set; }
     public List<MapGenerator.Coordenada> Cerrados { get; set; }
     public List<FantasmaManager> Companeros { get; set; }
@@ -89,7 +90,7 @@ public class FantasmaManager : Agente
                 //if (Cerrados.Count >= (int)Mapa.mapSize.x * 2)
                 //    Cerrados.RemoveAt(0);
 
-                if (Cerrados.Count >= 3)
+                if (Cerrados.Count >= BloqueoDePosiciones)
                     Cerrados.RemoveAt(0);
 
                 //if(Utility.IsInPosition)

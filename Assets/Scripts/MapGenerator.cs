@@ -14,6 +14,7 @@ public class MapGenerator : MonoBehaviour
     public List<Coordenada> Obstaculos { get; set; }
     public List<Coordenada> Inaccesibles { get; set; }
     public Transform[,] tileMap { get; set; }
+    public List<Vector2> Tunel { get; set; }
 
     public MapGenerator() { }
 
@@ -180,6 +181,13 @@ public class MapGenerator : MonoBehaviour
             Vector3 posicion = obtienePosicion(coord.x, coord.y);
             Transform obstaculo = Instantiate(obstaclePrefab, posicion + Vector3.up * 0.5f, Quaternion.identity) as Transform;
             obstaculo.parent = mapHolder;
+        }
+
+        Tunel = new List<Vector2>();
+        for (int i = 0; i <= 4; i++)
+        {
+            Tunel.Add(new Vector2(i, 11));
+            Tunel.Add(new Vector2(18 - i, 11));
         }
     }
 
