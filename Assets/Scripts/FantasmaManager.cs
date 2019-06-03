@@ -71,7 +71,7 @@ public class FantasmaManager : Agente
                                 //Alcanzado = true;
                                 // Objetivo.Alcanzado = true;
                                 Objetivo.setAlcanzadoPor(1);
-                                Alcanzado = Objetivo.AlcanzadoPor >= 2 ? true : false;
+                                // Alcanzado = Objetivo.AlcanzadoPor >= 2 ? true : false;
                                 break;
                             }
                             else Objetivo.setAlcanzadoPor(-1);

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PacmanManager : Agente
 {
+    public int distanciaSegura = 8;
     public List<FantasmaManager> Fantasmas { get; set; }
     public int AlcanzadoPor { get; private set; }
     public PacmanManager() { }
@@ -24,7 +25,7 @@ public class PacmanManager : Agente
         {
             if (!Alcanzado)
             {
-                if(AlcanzadoPor <= 2)
+                if (AlcanzadoPor <= 2)
                     StartCoroutine(Rutina(0.25f));
             }
         }
@@ -50,14 +51,15 @@ public class PacmanManager : Agente
             Vector3 mejorCoordenada = new Vector3(this.Posicion.x, this.transform.position.y, this.Posicion.y);
 
             int j = -1;
+            int dsegura = 0;
 
             for (int i = 0; i < 4; i++)
             {
+                dsegura = 0;
                 try
                 {
                     if (PosiblesMovimientos[i])
                     {
-                        bool breakLoop = false;
                         Vector3 c = new Vector3(coordenadas[i].x, this.transform.position.y, coordenadas[i].y);
 
                         foreach (FantasmaManager fantasma in Fantasmas)
@@ -66,7 +68,7 @@ public class PacmanManager : Agente
                             {
                                 float val = Utility.ManhattanDistance(c, fantasma.Posicion);
 
-                                if(val <= 8)
+                                if(val <= distanciaSegura)
                                 {
                                     if (val > mejor )
                                     {
@@ -79,17 +81,31 @@ public class PacmanManager : Agente
                                 else
                                 {
                                     // Elegir posicion aleatoria
+                                    dsegura++;
                                 }
                             } catch(NullReferenceException nre)
                             {
                                 Debug.Log("Error al seleccionar movimiento.\n" + nre.Message);
                             }
                         }
-
-                        if (breakLoop) break;
                     }
                 }
                 catch (Exception) { }
+            }
+
+            // Obtiene movimiento aleatorio si es que la distancia segura
+            // está activada
+            if(dsegura >= Fantasmas.Count)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    int rval = UnityEngine.Random.Range(0, 4);
+                    if (PosiblesMovimientos[rval])
+                    {
+                        j = rval;
+                        break;
+                    }
+                }
             }
 
             // Moverse al seleccinado
@@ -119,11 +135,6 @@ public class PacmanManager : Agente
         AlcanzadoPor += n;
         Alcanzado = AlcanzadoPor >= 2 ? true : false;
         if (AlcanzadoPor < 0) AlcanzadoPor = 0;
-    }
-
-    private void EvitaPosibleMovimiento()
-    {
-
     }
 
     private void MovimientoManual()
