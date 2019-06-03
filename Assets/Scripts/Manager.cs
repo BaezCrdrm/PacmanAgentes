@@ -77,6 +77,7 @@ public class Manager : MonoBehaviour
             {
                 // Esta condición puede cambiar
                 int total = Fantasmas.FindAll(p => p.Alcanzado == true).Count;
+                pac.Fantasmas = Fantasmas;
 
                 if (total >= NumeroDeFantasmasRodeandoAObjetivo || EsPacmanComido())
                 {

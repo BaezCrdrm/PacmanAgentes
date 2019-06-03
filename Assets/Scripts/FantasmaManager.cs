@@ -15,7 +15,7 @@ public class FantasmaManager : Agente
         base.Start();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if(!EnUso)
         {
@@ -35,7 +35,7 @@ public class FantasmaManager : Agente
                 EvaluaMovimiento();
 
                 // Obtener los posibles movimientos
-                PosiblesMovimientos = Utility.SeleccionaMovimiento(Censo);
+                PosiblesMovimientos = SeleccionaMovimiento();
 
                 // Medir la distancia en todos los posibles movimientos
                 //      Obtener las coordenadas de los posibles movimientos
@@ -113,4 +113,5 @@ public class FantasmaManager : Agente
         }
         EnUso = false;
     }
+
 }

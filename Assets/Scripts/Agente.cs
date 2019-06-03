@@ -78,6 +78,64 @@ public class Agente : MonoBehaviour
             else return false;
     }
 
+    ///<summary>
+    /// Función de movimiento presentado por la profesora.
+    /// Selecciona los movimientos para rodear un obstáculo.
+    ///</summary>
+    public bool[] SeleccionaMovimiento(List<FantasmaManager> _fantasmas = null)
+    {
+        bool[] PosiblesMovimientos = new bool[4];
+
+        if (this.GetType() == typeof(FantasmaManager))
+        {
+            PosiblesMovimientos[0] = Censo[3];
+            PosiblesMovimientos[1] = Censo[5];
+            PosiblesMovimientos[2] = Censo[7];
+            PosiblesMovimientos[3] = Censo[1];
+        }
+        else if (this.GetType() == typeof(PacmanManager))
+        {
+            PosiblesMovimientos[0] = Censo[3] && MovimientoLibreDeFantasmas(_fantasmas, 3);
+            PosiblesMovimientos[1] = Censo[5] && MovimientoLibreDeFantasmas(_fantasmas, 5);
+            PosiblesMovimientos[2] = Censo[7] && MovimientoLibreDeFantasmas(_fantasmas, 7);
+            PosiblesMovimientos[3] = Censo[1] && MovimientoLibreDeFantasmas(_fantasmas, 1);
+        }
+
+        // printMovimientos();
+
+        return PosiblesMovimientos;
+    }
+
+    protected bool MovimientoLibreDeFantasmas(List<FantasmaManager> _fantasmas, int _movimiento)
+    {
+        int totalFantasmas = 0;
+        int[] Movs = { _movimiento + 1 > 7 ? 0 : _movimiento + 1, _movimiento - 1 };
+
+        // Checa Posibles intersecciones de diagonales
+        for (int i = 0; i < Movs.Length; i++)
+        {
+            Vector2 coords = Utility.ObtieneCoordenadasRelativas(Movs[i]);
+            coords.x += Posicion.x;
+            coords.y += Posicion.y;
+
+            totalFantasmas += _fantasmas.FindAll(p => p.Posicion == coords).Count;
+        }
+
+        // Checa posibles intersecciones rectas
+        for (int k = 1; k <= 2; k++)
+        {
+            Vector2 coords = Utility.ObtieneCoordenadasRelativas(_movimiento);
+            coords.x = (coords.x * k) + Posicion.x;
+            coords.y = (coords.y * k) + Posicion.y;
+
+            totalFantasmas += _fantasmas.FindAll(p => p.Posicion == coords).Count;
+
+            if(GetType() == typeof(FantasmaManager)) break;
+        }
+        
+        return totalFantasmas > 0 ? false : true;
+    }
+
     public void MoverA(int _m)
     {
         /*

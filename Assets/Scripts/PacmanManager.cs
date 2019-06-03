@@ -16,7 +16,7 @@ public class PacmanManager : Agente
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         // MovimientoManual();
 
@@ -39,7 +39,7 @@ public class PacmanManager : Agente
             EvaluaMovimiento();
 
             // Obtener los posibles movimientos
-            PosiblesMovimientos = Utility.SeleccionaMovimiento(Censo);
+            PosiblesMovimientos = SeleccionaMovimiento(Fantasmas);
 
             // Medir la distancia en todos los posibles movimientos
             //      Obtener las coordenadas de los posibles movimientos
@@ -68,7 +68,7 @@ public class PacmanManager : Agente
 
                                 if(val <= 8)
                                 {
-                                    if (val > mejor)
+                                    if (val > mejor )
                                     {
                                         mejor = val;
                                         j = i;
@@ -119,6 +119,11 @@ public class PacmanManager : Agente
         AlcanzadoPor += n;
         Alcanzado = AlcanzadoPor >= 2 ? true : false;
         if (AlcanzadoPor < 0) AlcanzadoPor = 0;
+    }
+
+    private void EvitaPosibleMovimiento()
+    {
+
     }
 
     private void MovimientoManual()

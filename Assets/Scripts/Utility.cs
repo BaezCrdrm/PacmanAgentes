@@ -90,24 +90,6 @@ public static class Utility
         return val;
     }
 
-    ///<summary>
-    /// Función de movimiento presentado por la profesora.
-    /// Selecciona los movimientos para rodear un obstáculo.
-    ///</summary>
-    public static bool[] SeleccionaMovimiento(bool[] Censo)
-    {
-        bool[] PosiblesMovimientos = new bool[4];
-
-        PosiblesMovimientos[0] = Censo[3];
-        PosiblesMovimientos[1] = Censo[5];
-        PosiblesMovimientos[2] = Censo[7];
-        PosiblesMovimientos[3] = Censo[1];
-
-        // printMovimientos();
-
-        return PosiblesMovimientos;
-    }
-
     public static Vector2 ObtieneCoordenadasRelativas(int i)
     {
         Vector2 vals = new Vector2(0,0);
