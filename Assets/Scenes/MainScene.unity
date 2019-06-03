@@ -245,7 +245,7 @@ MonoBehaviour:
   FantasmaPrefab: {fileID: 4352662842229399050, guid: 9dad331ee92649044a0465911cd5fc96,
     type: 3}
   NumeroFantasmasGenerados: 3
-  NumeroDeFantasmasRodeandoAObjetivo: 2
+  NumeroDeFantasmasRodeandoAObjetivo: 3
 --- !u!82 &798887448
 AudioSource:
   m_ObjectHideFlags: 0
