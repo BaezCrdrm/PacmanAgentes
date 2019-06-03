@@ -7,6 +7,7 @@ public class FantasmaManager : Agente
 {
     public PacmanManager Objetivo { get; set; }
     public List<MapGenerator.Coordenada> Cerrados { get; set; }
+    public List<FantasmaManager> Companeros { get; set; }
 
     public FantasmaManager() { }
 
@@ -15,7 +16,7 @@ public class FantasmaManager : Agente
         base.Start();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if(!EnUso)
         {
@@ -35,7 +36,7 @@ public class FantasmaManager : Agente
                 EvaluaMovimiento();
 
                 // Obtener los posibles movimientos
-                PosiblesMovimientos = SeleccionaMovimiento();
+                PosiblesMovimientos = SeleccionaMovimiento(Companeros);
 
                 // Medir la distancia en todos los posibles movimientos
                 //      Obtener las coordenadas de los posibles movimientos

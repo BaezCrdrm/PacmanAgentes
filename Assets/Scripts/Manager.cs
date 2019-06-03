@@ -70,6 +70,7 @@ public class Manager : MonoBehaviour
                 Fantasmas[i].Mapa = mapa;
             }
 
+            ActualizaUbicacionFantasmas();
             pac.Fantasmas = Fantasmas;
         } else
         {
@@ -77,6 +78,7 @@ public class Manager : MonoBehaviour
             {
                 // Esta condición puede cambiar
                 int total = Fantasmas.FindAll(p => p.Alcanzado == true).Count;
+                ActualizaUbicacionFantasmas();
                 pac.Fantasmas = Fantasmas;
 
                 if (total >= NumeroDeFantasmasRodeandoAObjetivo || EsPacmanComido())
@@ -91,6 +93,14 @@ public class Manager : MonoBehaviour
     private bool EsPacmanComido()
     {
         return Fantasmas.FindAll(p => p.Posicion == pac.Posicion).Count > 0 ? true : false;
+    }
+
+    private void ActualizaUbicacionFantasmas()
+    {
+        Fantasmas.ForEach(i =>
+        {
+            i.Companeros = Fantasmas;
+        });
     }
 
     private void Finalizar()
