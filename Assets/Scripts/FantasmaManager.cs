@@ -29,7 +29,7 @@ public class FantasmaManager : Agente
         EnUso = true;
         if (Objetivo != null)
         {
-            if (!PrimeraVuelta && !Alcanzado)
+            if (!PrimeraVuelta)
             {
                 // Evaluar movimientos
                 EvaluaMovimiento();
@@ -67,10 +67,13 @@ public class FantasmaManager : Agente
 
                             if (Mathf.Abs(val) <= 1f)
                             {
-                                Alcanzado = true;
-                                Objetivo.Alcanzado = true;
+                                //Alcanzado = true;
+                                // Objetivo.Alcanzado = true;
+                                Objetivo.setAlcanzadoPor(1);
+                                Alcanzado = Objetivo.AlcanzadoPor >= 2 ? true : false;
                                 break;
                             }
+                            else Objetivo.setAlcanzadoPor(-1);
                         }
                     }
                     catch (Exception) { }

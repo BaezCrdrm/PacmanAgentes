@@ -6,7 +6,7 @@ using UnityEngine;
 public class PacmanManager : Agente
 {
     public List<FantasmaManager> Fantasmas { get; set; }
-    public bool Alcanzado { get; set; }
+    public int AlcanzadoPor { get; private set; }
     public PacmanManager() { }
 
     // Start is called before the first frame update
@@ -23,14 +23,17 @@ public class PacmanManager : Agente
         if (!EnUso)
         {
             if (!Alcanzado)
-                StartCoroutine(Rutina(0.25f));
+            {
+                if(AlcanzadoPor <= 2)
+                    StartCoroutine(Rutina(0.25f));
+            }
         }
     }
 
     IEnumerator Rutina(float delay)
     {
         EnUso = true;
-        if (!PrimeraVuelta && !Alcanzado)
+        if (!PrimeraVuelta)
         {
             // Evaluar movimientos
             EvaluaMovimiento();
@@ -63,12 +66,19 @@ public class PacmanManager : Agente
                             {
                                 float val = Utility.ManhattanDistance(c, fantasma.Posicion);
 
-                                if (val > mejor)
+                                if(val <= 8)
                                 {
-                                    mejor = val;
-                                    j = i;
-                                    mejorCoordenada = c;
-                                    Debug.Log(System.String.Format("Nuevo mejor valor: {0}", val));
+                                    if (val > mejor)
+                                    {
+                                        mejor = val;
+                                        j = i;
+                                        mejorCoordenada = c;
+                                        Debug.Log(System.String.Format("Nuevo mejor valor: {0}", val));
+                                    }
+                                }
+                                else
+                                {
+                                    // Elegir posicion aleatoria
                                 }
                             } catch(NullReferenceException nre)
                             {
@@ -102,6 +112,13 @@ public class PacmanManager : Agente
 
         yield return new WaitForSeconds(delay);
         EnUso = false;
+    }
+
+    public void setAlcanzadoPor(int n)
+    {
+        AlcanzadoPor += n;
+        Alcanzado = AlcanzadoPor >= 2 ? true : false;
+        if (AlcanzadoPor < 0) AlcanzadoPor = 0;
     }
 
     private void MovimientoManual()

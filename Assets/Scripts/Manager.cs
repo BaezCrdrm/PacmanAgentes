@@ -78,14 +78,25 @@ public class Manager : MonoBehaviour
                 // Esta condición puede cambiar
                 int total = Fantasmas.FindAll(p => p.Alcanzado == true).Count;
 
-                if (total >= NumeroDeFantasmasRodeandoAObjetivo)
+                if (total >= NumeroDeFantasmasRodeandoAObjetivo || EsPacmanComido())
                 {
-                    Detener = true;
-                    Fantasmas.ForEach(i => i.Alcanzado = true);
-                    audioData.Play(0);
+                    Finalizar();
                 }
                 else Detener = false;
             }
         }
+    }
+
+    private bool EsPacmanComido()
+    {
+        return Fantasmas.FindAll(p => p.Posicion == pac.Posicion).Count > 0 ? true : false;
+    }
+
+    private void Finalizar()
+    {
+        Detener = true;
+        Fantasmas.ForEach(i => i.Alcanzado = true);
+        pac.Alcanzado = true;
+        audioData.Play(0);
     }
 }
