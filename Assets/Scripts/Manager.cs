@@ -13,6 +13,7 @@ public class Manager : MonoBehaviour
     List<FantasmaManager> Fantasmas;
     bool PrimeraVuelta = true;
     bool Detener;
+    AudioSource audioData;
 
     void Start()
     {
@@ -22,6 +23,7 @@ public class Manager : MonoBehaviour
             Fantasmas.Add(new FantasmaManager());
         }
         mapa = Instantiate(MapaPrefab, new Vector3(0, 0.5f, 0), Quaternion.identity).GetComponent<MapGenerator>();
+        audioData = GetComponent<AudioSource>();
     }
 
     private Vector3 GetValidRandomVector3(bool fant = true)
@@ -80,6 +82,7 @@ public class Manager : MonoBehaviour
                 {
                     Detener = true;
                     Fantasmas.ForEach(i => i.Alcanzado = true);
+                    audioData.Play(0);
                 }
                 else Detener = false;
             }
