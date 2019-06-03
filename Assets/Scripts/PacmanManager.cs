@@ -49,10 +49,10 @@ public class PacmanManager : Agente
             // Elegir el más cercano (greedy)
             float mejor = -1;
             bool enTunel = Mapa.Tunel.FindAll(p => p.x == Posicion.x && p.y == Posicion.y).Count > 0;
-            Vector3 mejorCoordenada = new Vector3(this.Posicion.x, this.transform.position.y, this.Posicion.y);
 
             int j = -1;
             int dsegura = 0;
+            List<int> PosiblesMovimientosLibres = new List<int>();
 
             for (int i = 0; i < 4; i++)
             {
@@ -73,11 +73,10 @@ public class PacmanManager : Agente
 
                                     if (val <= distanciaSegura)
                                     {
-                                        if (val > mejor)
+                                        if (val >= mejor)
                                         {
                                             mejor = val;
-                                            j = i;
-                                            mejorCoordenada = c;
+                                            PosiblesMovimientosLibres.Add(i);
                                             Debug.Log(System.String.Format("Nuevo mejor valor: {0}", val));
                                         }
                                     }
@@ -108,14 +107,22 @@ public class PacmanManager : Agente
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    int rval = UnityEngine.Random.Range(0, 4);
-                    if (PosiblesMovimientos[rval])
+                    int randomValue = UnityEngine.Random.Range(0, 4);
+                    if (PosiblesMovimientos[randomValue])
                     {
-                        j = rval;
+                        j = randomValue;
                         break;
                     }
                 }
             }
+
+            // Obtiene movimiento válido (totalmente filtrado) ALEATORIO.
+            if (PosiblesMovimientosLibres.Count > 1)
+            {
+                int randomIndex = UnityEngine.Random.Range(0, PosiblesMovimientosLibres.Count);
+                j = PosiblesMovimientosLibres[randomIndex];
+            }
+            else j = PosiblesMovimientosLibres[0];
 
             // Moverse al seleccinado
             //      Bloquear posición anterior
