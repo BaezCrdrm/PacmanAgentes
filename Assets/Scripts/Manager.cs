@@ -84,6 +84,7 @@ public class Manager : MonoBehaviour
                 if (total >= NumeroDeFantasmasRodeandoAObjetivo || EsPacmanComido())
                 {
                     Finalizar();
+                    pac.Morir();
                 }
                 else Detener = false;
             }

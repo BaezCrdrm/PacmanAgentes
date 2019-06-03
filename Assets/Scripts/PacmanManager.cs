@@ -8,6 +8,9 @@ public class PacmanManager : Agente
     public int distanciaSegura = 8;
     public List<FantasmaManager> Fantasmas { get; set; }
     public int AlcanzadoPor { get; private set; }
+    private float timeToFade = 1.0f;
+    private Color alphaColor;
+
     public PacmanManager() { }
 
     // Start is called before the first frame update
@@ -15,6 +18,8 @@ public class PacmanManager : Agente
     {
         base.Start();
         Cerrados = new List<MapGenerator.Coordenada>();
+        alphaColor = GetComponent<MeshRenderer>().material.color;
+        alphaColor.a = 0;
     }
 
     // Update is called once per frame
@@ -59,6 +64,7 @@ public class PacmanManager : Agente
 
             int dsegura = 0;
             List<int> PosiblesMovimientosLibres = new List<int>();
+            bool elegida = true;
 
             for (int i = 0; i < 4; i++)
             {
@@ -120,6 +126,7 @@ public class PacmanManager : Agente
                     if (PosiblesMovimientos[randomValue])
                     {
                         j = randomValue;
+                        elegida = false;
                         break;
                     }
                 }
@@ -149,6 +156,7 @@ public class PacmanManager : Agente
         else if (Alcanzado)
         {
             Debug.Log("Alcanzado: " + Alcanzado);
+            EnUso = false;
         }
         else
         {
@@ -166,6 +174,15 @@ public class PacmanManager : Agente
         AlcanzadoPor += n;
         Alcanzado = AlcanzadoPor >= 2 ? true : false;
         if (AlcanzadoPor < 0) AlcanzadoPor = 0;
+    }
+
+    public void Morir()
+    {
+        //var color = GetComponent<MeshRenderer>().material.color;
+        //var c = new Color(color.r, color.g, color.b, color.a - (timeToFade * Time.deltaTime));
+        //GetComponent<MeshRenderer>().material.color = c;
+
+        transform.position = new Vector3(transform.position.x, -1, transform.position.z);
     }
 
     private void MovimientoManual()
