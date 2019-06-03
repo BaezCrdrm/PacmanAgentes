@@ -82,29 +82,14 @@ public class Agente : MonoBehaviour
     /// Función de movimiento presentado por la profesora.
     /// Selecciona los movimientos para rodear un obstáculo.
     ///</summary>
-    public bool[] SeleccionaMovimiento(List<FantasmaManager> _fantasmas = null)
+    public bool[] SeleccionaMovimiento(List<FantasmaManager> _fantasmas)
     {
         bool[] PosiblesMovimientos = new bool[4];
 
-        if (this.GetType() == typeof(FantasmaManager))
-        {
-            //PosiblesMovimientos[0] = Censo[3];
-            //PosiblesMovimientos[1] = Censo[5];
-            //PosiblesMovimientos[2] = Censo[7];
-            //PosiblesMovimientos[3] = Censo[1];
-
-            PosiblesMovimientos[0] = Censo[3] && MovimientoLibreDeFantasmas(_fantasmas, 3);
-            PosiblesMovimientos[1] = Censo[5] && MovimientoLibreDeFantasmas(_fantasmas, 5);
-            PosiblesMovimientos[2] = Censo[7] && MovimientoLibreDeFantasmas(_fantasmas, 7);
-            PosiblesMovimientos[3] = Censo[1] && MovimientoLibreDeFantasmas(_fantasmas, 1);
-        }
-        else if (this.GetType() == typeof(PacmanManager))
-        {
-            PosiblesMovimientos[0] = Censo[3] && MovimientoLibreDeFantasmas(_fantasmas, 3);
-            PosiblesMovimientos[1] = Censo[5] && MovimientoLibreDeFantasmas(_fantasmas, 5);
-            PosiblesMovimientos[2] = Censo[7] && MovimientoLibreDeFantasmas(_fantasmas, 7);
-            PosiblesMovimientos[3] = Censo[1] && MovimientoLibreDeFantasmas(_fantasmas, 1);
-        }
+        PosiblesMovimientos[0] = Censo[3] && MovimientoLibreDeFantasmas(_fantasmas, 3);
+        PosiblesMovimientos[1] = Censo[5] && MovimientoLibreDeFantasmas(_fantasmas, 5);
+        PosiblesMovimientos[2] = Censo[7] && MovimientoLibreDeFantasmas(_fantasmas, 7);
+        PosiblesMovimientos[3] = Censo[1] && MovimientoLibreDeFantasmas(_fantasmas, 1);
 
         // printMovimientos();
 

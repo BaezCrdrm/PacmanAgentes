@@ -16,7 +16,7 @@ public class FantasmaManager : Agente
         base.Start();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if(!EnUso)
         {
