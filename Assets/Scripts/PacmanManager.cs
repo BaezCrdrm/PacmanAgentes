@@ -14,6 +14,7 @@ public class PacmanManager : Agente
     protected override void Start()
     {
         base.Start();
+        Cerrados = new List<MapGenerator.Coordenada>();
     }
 
     // Update is called once per frame
@@ -47,10 +48,15 @@ public class PacmanManager : Agente
             MapGenerator.Coordenada[] coordenadas = Mapa.PuedeMoverseA(Posicion, PosiblesMovimientos);
 
             // Elegir el más cercano (greedy)
+            int j = -1;
             float mejor = -1;
             bool enTunel = Mapa.Tunel.FindAll(p => p.x == Posicion.x && p.y == Posicion.y).Count > 0;
+            if (enTunel)
+            {
+                if (Posicion.x > 16) j = 2;
+                else if (Posicion.x < 2) j = 0;
+            }
 
-            int j = -1;
             int dsegura = 0;
             List<int> PosiblesMovimientosLibres = new List<int>();
 
@@ -59,43 +65,46 @@ public class PacmanManager : Agente
                 dsegura = 0;
                 try
                 {
-                    if (PosiblesMovimientos[i])
+                    if (PosiblesMovimientos[i] &&
+                            !Utility.IsInList(coordenadas[i], Cerrados))
                     {
-                        if (!enTunel)
+                        //if (!enTunel)
+                        //{
+                        Vector3 c = new Vector3(coordenadas[i].x, this.transform.position.y, coordenadas[i].y);
+
+                        foreach (FantasmaManager fantasma in Fantasmas)
                         {
-                            Vector3 c = new Vector3(coordenadas[i].x, this.transform.position.y, coordenadas[i].y);
-
-                            foreach (FantasmaManager fantasma in Fantasmas)
+                            try
                             {
-                                try
-                                {
-                                    float val = Utility.ManhattanDistance(c, fantasma.Posicion);
+                                float val = Utility.ManhattanDistance(c, fantasma.Posicion);
 
-                                    if (val <= distanciaSegura)
+                                if (val <= distanciaSegura)
+                                {
+                                    if (val >= mejor)
                                     {
-                                        if (val >= mejor)
-                                        {
-                                            mejor = val;
-                                            PosiblesMovimientosLibres.Add(i);
-                                            Debug.Log(System.String.Format("Nuevo mejor valor: {0}", val));
-                                        }
-                                    }
-                                    else
-                                    {
-                                        // Elegir posicion aleatoria
-                                        dsegura++;
+                                        mejor = val;
+                                        PosiblesMovimientosLibres.Add(i);
+                                        Debug.Log(System.String.Format("Nuevo mejor valor: {0}", val));
                                     }
                                 }
-                                catch (NullReferenceException nre)
+                                else
                                 {
-                                    Debug.Log("Error al seleccionar movimiento.\n" + nre.Message);
+                                    // Elegir posicion aleatoria
+                                    dsegura++;
                                 }
                             }
-                        } else
-                        {
-                            j = Posicion.x <= 4 ? 0 : 3;
-                            break;
+                            catch (NullReferenceException nre)
+                            {
+                                Debug.Log("Error al seleccionar movimiento.\n" + nre.Message);
+                            }
                         }
+                        // }
+                        //else
+                        //{
+                        //    j = Posicion.x <= 2 ? 0 : 2;
+                        //    if(Posicion.x <= 2)
+                        //    break;
+                        //}
                     }
                 }
                 catch (Exception) { }
@@ -103,7 +112,7 @@ public class PacmanManager : Agente
 
             // Obtiene movimiento aleatorio si es que la distancia segura
             // está activada
-            if(dsegura >= Fantasmas.Count)
+            if (dsegura >= Fantasmas.Count)
             {
                 for (int i = 0; i < 4; i++)
                 {
@@ -115,19 +124,25 @@ public class PacmanManager : Agente
                     }
                 }
             }
-
-            // Obtiene movimiento válido (totalmente filtrado) ALEATORIO.
-            if (PosiblesMovimientosLibres.Count > 1)
+            else
             {
-                int randomIndex = UnityEngine.Random.Range(0, PosiblesMovimientosLibres.Count);
-                j = PosiblesMovimientosLibres[randomIndex];
+                // Obtiene movimiento válido (totalmente filtrado) ALEATORIO.
+                if (PosiblesMovimientosLibres.Count > 1)
+                {
+                    int randomIndex = UnityEngine.Random.Range(0, PosiblesMovimientosLibres.Count);
+                    j = PosiblesMovimientosLibres[randomIndex];
+                }
+                else j = PosiblesMovimientosLibres[0];
             }
-            else j = PosiblesMovimientosLibres[0];
 
             // Moverse al seleccinado
             //      Bloquear posición anterior
             Anterior = Posicion;
+            Cerrados.Add(new MapGenerator.Coordenada((int)Posicion.x, (int)Posicion.y));
             MoverA(j);
+
+            if (Cerrados.Count > 0)
+                Cerrados.Clear();
 
             // Repetir
         }

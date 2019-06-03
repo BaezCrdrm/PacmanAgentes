@@ -12,6 +12,7 @@ public class Agente : MonoBehaviour
     public Vector2 Anterior { get; set; }
     public bool Alcanzado { get; set; }
     public bool EnUso { get; set; }
+    public List<MapGenerator.Coordenada> Cerrados { get; set; }
 
     protected virtual void Start()
     {

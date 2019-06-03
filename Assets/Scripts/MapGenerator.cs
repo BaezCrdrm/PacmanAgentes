@@ -184,7 +184,7 @@ public class MapGenerator : MonoBehaviour
         }
 
         Tunel = new List<Vector2>();
-        for (int i = 0; i <= 4; i++)
+        for (int i = 0; i < 3; i++)
         {
             Tunel.Add(new Vector2(i, 11));
             Tunel.Add(new Vector2(18 - i, 11));
